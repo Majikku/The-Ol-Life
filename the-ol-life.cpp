@@ -13,13 +13,24 @@ int golarr[5][5][1000]{
     {0,1,0,1,0}
 };
 
+// Global variables
+int iteration = 0; 
+
+
 // The total sum of adjacent cells
 // Takes:
 // X(Position), Y(Position), Z(Iteration)
 // Returns int sum
 
 int neibourSum(int x, int y, int z){
-
+    // Add the sum in layers
+    // 
+    // Add to sum, then move one to the right
+    // ^ Repeat three times
+    // Once one layer is done, move one down
+    // ^ Repeat three times
+    // Once completed, remove middle cell from sum
+    // Return sum
 
     int a,b;
     int sum = 0;
@@ -28,46 +39,36 @@ int neibourSum(int x, int y, int z){
         for(b = -1; b <= 1; b++){
             sum += golarr[x+a][y+b][z];
         };
-
         b--;
     };
-
     sum =- golarr[x][y][z];
-
     return sum;
 };
 
-// int neiboursum(int i, int j){ 
-//     int a,b;
-//     int sum = 0;
-//     for(a = -1; a <= 1; a++){
-//         for(b = -1; b <= 1; b++){
-//             std::cout << a << " : " << b << " :: " << arr[i+a][j+b] << "\n";
-//             sum += arr[i+a][j+b];
-//         };
-//         b = -1;
-//     };
-//     return sum;
-// };
 
 // Update to next iteration
 // Doesn't return anything
 
-void golupdate(){
+void golupdate(int sizex, int sizey){
+    // Game of life rules:
+    // Growth: A dead cell with 3 alive neighbours becomes alive.
+    // Loneliness: A cell with 1 or less alive neighbours dies.
+    // Overcrowding: A cell with 4 or more alive neighbours dies.
+    // Stability: A cell with 2 or 3 neighboours remains the same. 
+
+    int a,b;
+    for(a=0; a <=sizey; a++){
+        for(b=0; b <= sizex; b++){
+            int sum = neibourSum(a,b,iteration);
+            if(sum = 3){ golarr[a][b][iteration] = 1; }
+            else if(sum > 3 || sum < 2){ golarr[a][b][iteration]; };
+        }
+    }
 
 };
 
-// void golupdate(){
-//     int a,b;
-//     for(a = 0; a <= 5; a++){
-//         for(b = 0; b <= 5; b++){
-//             int sum = neiboursum(a,b);
-//             if(sum = 3) { arrV2[a][b] = 1; } else if(sum > 4 || sum < 3) { arrV2[a][b] = 0; };
-//         }
-//     }
-// };
 
 int main(){
-
+    golupdate(5, 5);
     return 0;
 };
